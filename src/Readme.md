@@ -31,7 +31,7 @@ The payroll scheduler must conform to the following criteria:
 
 ### Pay By Frequency
 
-    ● ~There must be one payment only per calendar month. No calendar month should have less or more than one payment.~
+    ● There must be one payment only per calendar month. No calendar month should have less or more than one payment.
     ● If the payment date falls on a weekend, and the preceding available day is outside of the current month, then the payment should be made on the first available day after the current date.
     ● Payment frequency options are:
         1. "1 week"
@@ -172,3 +172,24 @@ Another commands which can be used are:
 
 ---------------
 
+Change directory to sittercity\src and run command:
+
+    go test ./... -coverprofile=coverage.out
+
+It'll test all the packages with test files and generate a coverage.out file under src\
+
+Now run command:
+
+    go tool cover -html=coverage.out
+
+This will generate an HTML report similar to coverage.html under src\ folder.
+
+### Current Code Metrics are at 100% Code Coverage
+
+Alternatively, if you just want overall picture of code coverage inside terminal, run:
+
+    go tool cover -func=coverage.out
+
+This will give you coverage of all files by their individual functions.
+
+### Note: No third party packages/libraries have been used in this code. Hence, you should be able to run it with usual GO steps
