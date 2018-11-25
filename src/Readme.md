@@ -16,6 +16,7 @@ To get the payroll schedule for 2018 on a bi-weekly schedule starting on the 15t
 
 ## Acceptance Criteria
 
+---------------
 The payroll scheduler must conform to the following criteria:
 
 ### PayBy Day
@@ -91,6 +92,7 @@ Any payment date that falls on a public holiday should be made on the preceding 
 
 ## Code Organization
 
+---------------
 
 The code is oranized as Sittercity/src/*. All the packages are mentioned with comments and test cases are included within respective packages. The major hierarchy of code is:
 
@@ -119,6 +121,7 @@ The code is oranized as Sittercity/src/*. All the packages are mentioned with co
 
 ### Working with this code
 
+---------------
 
 #### Prerequisites
 
@@ -167,6 +170,7 @@ Another commands which can be used are:
 
 ## Code Metrics
 
+---------------
 
 Change directory to sittercity\src and run command:
 
@@ -189,3 +193,10 @@ Alternatively, if you just want overall picture of code coverage inside terminal
 This will give you coverage of all files by their individual functions.
 
 ### Note: No third party packages/libraries have been used in this code. Hence, you should be able to run it with usual GO steps
+
+Finally, if you need to run individual test cases, change directory to particular package or folder and run:
+
+    go test
+
+***Author: Ravneet Singh***
+*********************************************************************************************************
