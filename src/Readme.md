@@ -16,7 +16,6 @@ To get the payroll schedule for 2018 on a bi-weekly schedule starting on the 15t
 
 ## Acceptance Criteria
 
----------------
 The payroll scheduler must conform to the following criteria:
 
 ### PayBy Day
