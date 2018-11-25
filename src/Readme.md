@@ -30,7 +30,7 @@ The payroll scheduler must conform to the following criteria:
 
 ### Pay By Frequency
 
-    ● There must be one payment only per calendar month. No calendar month should have less or more than one payment.
+    ● ~~There must be one payment only per calendar month. No calendar month should have less or more than one payment.~~
     ● If the payment date falls on a weekend, and the preceding available day is outside of the current month, then the payment should be made on the first available day after the current date.
     ● Payment frequency options are:
         1. "1 week"
@@ -91,7 +91,6 @@ Any payment date that falls on a public holiday should be made on the preceding 
 
 ## Code Organization
 
----------------
 
 The code is oranized as Sittercity/src/*. All the packages are mentioned with comments and test cases are included within respective packages. The major hierarchy of code is:
 
@@ -120,7 +119,6 @@ The code is oranized as Sittercity/src/*. All the packages are mentioned with co
 
 ### Working with this code
 
----------------
 
 #### Prerequisites
 
@@ -169,7 +167,6 @@ Another commands which can be used are:
 
 ## Code Metrics
 
----------------
 
 Change directory to sittercity\src and run command:
 
