@@ -1,0 +1,36 @@
+{
+	"public_holidays": [
+    {
+		"date": "11/22/2018",
+		"name": "Thanksgiving"
+    },
+    {
+		"date": "11/23/2018",
+		"name": "Day after Thanksgiving"
+    },
+    {
+		"date": "12/25/2018",
+		"name": "Christmas Day"
+		},    
+		{
+			"date": "07/06/2018",
+			"name": "Test Holiday"
+		},
+    {
+		"date": "11/30/2018",
+		"name": "Test Holiday"
+		},
+    {
+		"date": "11/22/2029",
+		"name": "Test Holiday"
+		},
+    {
+		"date": "12/21/2018",
+		"name": "Test Holiday"
+		},
+    {
+		"date": "11/26/2018",
+		"name": "Test Holiday"
+		}
+	]
+}

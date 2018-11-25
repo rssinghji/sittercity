@@ -1,0 +1,468 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">paybyday/payByDay.go (100.0%)</option>
+				
+				<option value="file1">paybyfrequency/payByFrequecy.go (100.0%)</option>
+				
+				<option value="file2">payrollhelper/payrollHelper.go (100.0%)</option>
+				
+				<option value="file3">utilities/utility.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package paybyday
+
+import (
+        "fmt"
+        "payrollhelper"
+        "time"
+        "utilities"
+)
+
+// SchedulePayrollByDay To schedule payroll based on year and day
+func SchedulePayrollByDay(year int, day int, publicHolidaysFilePath string) error <span class="cov8" title="1">{
+        fmt.Println("\n-------------------------------------------------------------------")
+        fmt.Println("Calculating Payroll Schedule Based on Year and Day")
+        if publicHolidaysFilePath == "" </span><span class="cov8" title="1">{
+                printPayrollSchedule(year, day)
+        }</span> else<span class="cov8" title="1"> {
+                printPayrollScheduleConsideringPublicHolidays(year, day, publicHolidaysFilePath)
+        }</span>
+        <span class="cov8" title="1">fmt.Println("-------------------------------------------------------------------")
+        return nil</span>
+}
+
+func printPayrollSchedule(year, day int) <span class="cov8" title="1">{
+        fmt.Println("\nPrinting Payroll Schedule")
+        // Set Date to first payroll date for January of the year required
+        newDate := time.Date(year, time.January, day, 00, 00, 00, 00, time.UTC)
+        previousMonth := newDate.Month()
+        _ = payrollhelper.PrintPayrollSchedule(newDate, year, day, previousMonth)
+}</span>
+
+func printPayrollScheduleConsideringPublicHolidays(year, day int, publicHolidaysFilePath string) <span class="cov8" title="1">{
+        publicHolidays := utilities.GetPublicHolidays(publicHolidaysFilePath)
+        fmt.Println("\n\nPrinting Payroll Schedule")
+        // Set Date to first payroll date for January of the year required
+        newDate := time.Date(year, time.January, day, 00, 00, 00, 00, time.UTC)
+        previousMonth := newDate.Month()
+        _ = payrollhelper.PrintPayrollScheduleWithPublicHolidays(newDate, year, day, previousMonth,
+                publicHolidays)
+}</span>
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package paybyfrequency
+
+import (
+        "fmt"
+        "payrollhelper"
+        "time"
+        "utilities"
+)
+
+// SchedulePayByFrequency To Schedule the payroll by frequency with a Starting Data
+func SchedulePayByFrequency(payFrequency string, startingDate string, publicHolidaysFilePath string) error <span class="cov8" title="1">{
+        fmt.Println("\n-------------------------------------------------------------------")
+        fmt.Println("Calculating Payroll Schedule Based on Pay Frquency and Starting Date")
+        if publicHolidaysFilePath == "" </span><span class="cov8" title="1">{
+                printPayrollSchedule(payFrequency, startingDate)
+        }</span> else<span class="cov8" title="1"> {
+                printPayrollScheduleConsideringPublicHolidays(payFrequency, startingDate, publicHolidaysFilePath)
+        }</span>
+        <span class="cov8" title="1">fmt.Println("\n-------------------------------------------------------------------")
+        return nil</span>
+}
+
+func printPayrollSchedule(payFrequency, startingDate string) <span class="cov8" title="1">{
+        fmt.Println("\nPrinting Payroll Schedule")
+        payFrequencyValue, month, day, year := payrollhelper.GetPayFrequencyNumberAndDateValues(payFrequency,
+                startingDate)
+        daysOffset := payFrequencyValue * 7
+        date := time.Date(year, month, day, 00, 00, 00, 00, time.UTC)
+        _ = payrollhelper.GetPayrollScheduleOnFrequency(date, year, daysOffset)
+}</span>
+
+func printPayrollScheduleConsideringPublicHolidays(payFrequency, startingDate,
+        publicHolidaysFilePath string) <span class="cov8" title="1">{
+        publicHolidays := utilities.GetPublicHolidays(publicHolidaysFilePath)
+        fmt.Println("\nPrinting Payroll Schedule")
+        payFrequencyValue, month, day, year := payrollhelper.GetPayFrequencyNumberAndDateValues(payFrequency,
+                startingDate)
+        daysOffset := payFrequencyValue * 7
+        date := time.Date(year, month, day, 00, 00, 00, 00, time.UTC)
+        _ = payrollhelper.GetPayrollScheduleOnFrequencyWithPublicHolidays(date, year, daysOffset, publicHolidays)
+}</span>
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package payrollhelper
+
+import (
+        "fmt"
+        "log"
+        "strconv"
+        "strings"
+        "time"
+        "utilities"
+)
+
+// ParseHolidayMatch is to help in getting whether the current date is a public holiday or not
+func ParseHolidayMatch(holidaysList []string, date time.Time) bool <span class="cov8" title="1">{
+        layout := utilities.DefaultDateLayout
+        dayValue := strconv.Itoa(date.Day())
+        if date.Day() &lt; 10 </span><span class="cov8" title="1">{
+                dayValue = "0" + dayValue
+        }</span>
+        <span class="cov8" title="1">monthValue := strconv.Itoa(int(date.Month()))
+        if int(date.Month()) &lt; 10 </span><span class="cov8" title="1">{
+                monthValue = "0" + monthValue
+        }</span>
+        <span class="cov8" title="1">dateString := monthValue + "/" + dayValue + "/" + strconv.Itoa(date.Year())
+        for index := 0; index &lt; len(holidaysList); index++ </span><span class="cov8" title="1">{
+                holiday, _ := time.Parse(layout, holidaysList[index])
+                dateValue, _ := time.Parse(layout, dateString)
+                if holiday == dateValue </span><span class="cov8" title="1">{
+                        return true
+                }</span>
+        }
+        <span class="cov8" title="1">return false</span>
+}
+
+// PrintPayrollSchedule to print the payrollschedule without considering public holidays
+func PrintPayrollSchedule(newDate time.Time, year, day int, previousMonth time.Month) []string <span class="cov8" title="1">{
+        var result []string
+        for </span><span class="cov8" title="1">{
+                newDate = getNewDateBasedOnWeekendForPayByDay(newDate)
+                if newDate.Year() != year </span><span class="cov8" title="1">{
+                        break</span>
+                }
+                <span class="cov8" title="1">if newDate.Month() == previousMonth+1 </span><span class="cov8" title="1">{
+                        fmt.Println("\n\t", newDate.Weekday().String()+",", newDate.Month(), strconv.Itoa(newDate.Day())+",", newDate.Year())
+                        result = append(result, newDate.Weekday().String()+", "+newDate.Month().String()+" "+strconv.Itoa(newDate.Day())+", "+strconv.Itoa(newDate.Year()))
+                        newDate = time.Date(year, newDate.Month(), day, 00, 00, 00, 00, time.UTC)
+                        previousMonth++
+                        continue</span>
+                }
+                <span class="cov8" title="1">fmt.Println("\n\t", newDate.Weekday().String()+",", newDate.Month(), strconv.Itoa(newDate.Day())+",", newDate.Year())
+                result = append(result, newDate.Weekday().String()+", "+newDate.Month().String()+" "+strconv.Itoa(newDate.Day())+", "+strconv.Itoa(newDate.Year()))
+                newDate = time.Date(year, newDate.Month()+1, day, 00, 00, 00, 00, time.UTC)
+                previousMonth++</span>
+        }
+        <span class="cov8" title="1">return result</span>
+}
+
+// PrintPayrollScheduleWithPublicHolidays to print the payrollschedule considering public holidays
+func PrintPayrollScheduleWithPublicHolidays(newDate time.Time, year, day int,
+        previousMonth time.Month, publicHolidays []string) []string <span class="cov8" title="1">{
+        var result []string
+        for </span><span class="cov8" title="1">{
+                if newDate.Year() != year </span><span class="cov8" title="1">{
+                        break</span>
+                }
+                <span class="cov8" title="1">isEnteredDateHoliday := ParseHolidayMatch(publicHolidays, newDate)
+                if isEnteredDateHoliday </span><span class="cov8" title="1">{
+                        newDate = getNextPaymentDateOutOfHolidays(newDate, publicHolidays)
+                }</span> else<span class="cov8" title="1"> {
+                        newDate = getNewDateBasedOnWeekendForPayByDayWithHolidays(newDate, publicHolidays)
+                }</span>
+                <span class="cov8" title="1">if newDate.Month() == previousMonth+1 </span><span class="cov8" title="1">{
+                        fmt.Println("\n\t", newDate.Weekday().String()+",", newDate.Month(), strconv.Itoa(newDate.Day())+",", newDate.Year())
+                        result = append(result, newDate.Weekday().String()+", "+newDate.Month().String()+" "+strconv.Itoa(newDate.Day())+", "+strconv.Itoa(newDate.Year()))
+                        newDate = time.Date(year, newDate.Month(), day, 00, 00, 00, 00, time.UTC)
+                        previousMonth++
+                        continue</span>
+                }
+                <span class="cov8" title="1">fmt.Println("\n\t", newDate.Weekday().String()+",", newDate.Month(), strconv.Itoa(newDate.Day())+",", newDate.Year())
+                result = append(result, newDate.Weekday().String()+", "+newDate.Month().String()+" "+strconv.Itoa(newDate.Day())+", "+strconv.Itoa(newDate.Year()))
+                newDate = time.Date(year, newDate.Month()+1, day, 00, 00, 00, 00, time.UTC)
+                previousMonth++</span>
+        }
+        <span class="cov8" title="1">return result</span>
+}
+
+// GetPayFrequencyNumberAndDateValues returns the pay frequency week value and parsed date
+func GetPayFrequencyNumberAndDateValues(payFrequency, startingDate string) (int, time.Month, int, int) <span class="cov8" title="1">{
+        payFrequencyStrings := strings.Split(payFrequency, " ")
+        payFrequencyValue, convError := strconv.Atoi(payFrequencyStrings[0])
+        if convError != nil </span><span class="cov8" title="1">{
+                log.Println("Error in Pay Frequency Value. Available options are: \n 1 week\n 2 week\n 4 week and\n 13 week")
+                // Return default values
+                return 2, time.January, 15, 2018
+        }</span>
+        <span class="cov8" title="1">layout := utilities.DefaultDateLayout
+        dateValue, _ := time.Parse(layout, startingDate)
+        return payFrequencyValue, dateValue.Month(), dateValue.Day(), dateValue.Year()</span>
+}
+
+// GetPayrollScheduleOnFrequency prints payroll schedule based on payfreuqency without considering public holidays
+func GetPayrollScheduleOnFrequency(nextPaymentDate time.Time, year, daysOffset int) []string <span class="cov8" title="1">{
+        var result []string
+        for </span><span class="cov8" title="1">{
+                if nextPaymentDate.Year() != year </span><span class="cov8" title="1">{
+                        break</span>
+                }
+                <span class="cov8" title="1">nextPaymentDate = getNewDateBasedOnWeekendForPayByFrequency(nextPaymentDate)
+                fmt.Println("\n\t", nextPaymentDate.Weekday().String()+",", nextPaymentDate.Month(), strconv.Itoa(nextPaymentDate.Day())+",", nextPaymentDate.Year())
+                result = append(result, nextPaymentDate.Weekday().String()+", "+nextPaymentDate.Month().String()+" "+strconv.Itoa(nextPaymentDate.Day())+", "+strconv.Itoa(nextPaymentDate.Year()))
+                nextPaymentDate = nextPaymentDate.AddDate(0, 0, daysOffset)</span>
+        }
+        <span class="cov8" title="1">return result</span>
+}
+
+// GetPayrollScheduleOnFrequencyWithPublicHolidays prints payroll schedule based on payfreuqency with public holidays
+func GetPayrollScheduleOnFrequencyWithPublicHolidays(nextPaymentDate time.Time, year, daysOffset int,
+        publicHolidays []string) []string <span class="cov8" title="1">{
+        var result []string
+        for </span><span class="cov8" title="1">{
+                if nextPaymentDate.Year() != year </span><span class="cov8" title="1">{
+                        break</span>
+                }
+                <span class="cov8" title="1">isEnteredDateHoliday := ParseHolidayMatch(publicHolidays, nextPaymentDate)
+                if isEnteredDateHoliday </span><span class="cov8" title="1">{
+                        nextPaymentDate = getNextPaymentDateOutOfHolidays(nextPaymentDate, publicHolidays)
+                }</span> else<span class="cov8" title="1"> {
+                        nextPaymentDate = getNewDateBasedOnWeekendForPayByFrequencyWithHolidays(nextPaymentDate, publicHolidays)
+                }</span>
+                <span class="cov8" title="1">fmt.Println("\n\t", nextPaymentDate.Weekday().String()+",", nextPaymentDate.Month(), strconv.Itoa(nextPaymentDate.Day())+",", nextPaymentDate.Year())
+                result = append(result, nextPaymentDate.Weekday().String()+", "+nextPaymentDate.Month().String()+" "+strconv.Itoa(nextPaymentDate.Day())+", "+strconv.Itoa(nextPaymentDate.Year()))
+                nextPaymentDate = nextPaymentDate.AddDate(0, 0, daysOffset)</span>
+        }
+        <span class="cov8" title="1">return result</span>
+}
+
+func getNextPaymentDate(nextPaymentDate time.Time, publicHolidays []string) time.Time <span class="cov8" title="1">{
+        for </span><span class="cov8" title="1">{
+                nextPaymentDate = nextPaymentDate.AddDate(0, 0, -1)
+                if !ParseHolidayMatch(publicHolidays, nextPaymentDate) &amp;&amp;
+                        nextPaymentDate.Weekday() != time.Saturday &amp;&amp; nextPaymentDate.Weekday() != time.Sunday </span><span class="cov8" title="1">{
+                        return nextPaymentDate
+                }</span>
+        }
+}
+
+func getNextPaymentDateOutOfHolidays(nextPaymentDate time.Time, publicHolidays []string) time.Time <span class="cov8" title="1">{
+        if nextPaymentDate.Weekday() != time.Friday </span><span class="cov8" title="1">{
+                for </span><span class="cov8" title="1">{
+                        nextPaymentDate = nextPaymentDate.AddDate(0, 0, -1)
+                        if nextPaymentDate.Weekday() == time.Friday </span><span class="cov8" title="1">{
+                                if ParseHolidayMatch(publicHolidays, nextPaymentDate) </span><span class="cov8" title="1">{
+                                        nextPaymentDate = getNextPaymentDate(nextPaymentDate, publicHolidays)
+                                        break</span>
+                                }
+                                <span class="cov8" title="1">break</span>
+                        }
+                }
+        } else<span class="cov8" title="1"> {
+                nextPaymentDate = getNextPaymentDate(nextPaymentDate, publicHolidays)
+        }</span>
+        <span class="cov8" title="1">return nextPaymentDate</span>
+}
+
+func getNewDateBasedOnWeekendForPayByDay(newDate time.Time) time.Time <span class="cov8" title="1">{
+        if newDate.Weekday() == time.Saturday </span><span class="cov8" title="1">{
+                newDate = newDate.AddDate(0, 0, -1)
+        }</span> else<span class="cov8" title="1"> if newDate.Weekday() == time.Sunday </span><span class="cov8" title="1">{
+                newDate = newDate.AddDate(0, 0, -2)
+        }</span>
+        <span class="cov8" title="1">return newDate</span>
+}
+
+func getNewDateBasedOnWeekendForPayByDayWithHolidays(newDate time.Time, publicHolidays []string) time.Time <span class="cov8" title="1">{
+        newDate = getNewDateBasedOnWeekendForPayByDay(newDate)
+        isEnteredDateHoliday := ParseHolidayMatch(publicHolidays, newDate)
+        if isEnteredDateHoliday </span><span class="cov8" title="1">{
+                newDate = getNextPaymentDateOutOfHolidays(newDate, publicHolidays)
+        }</span>
+        <span class="cov8" title="1">return newDate</span>
+}
+
+func getWeekdayDate(nextPaymentDate time.Time, subOffset, addOffset int) time.Time <span class="cov8" title="1">{
+        tempDate := nextPaymentDate.AddDate(0, 0, subOffset)
+        if tempDate.Month() != nextPaymentDate.Month() </span><span class="cov8" title="1">{
+                nextPaymentDate = nextPaymentDate.AddDate(0, 0, addOffset)
+        }</span> else<span class="cov8" title="1"> {
+                nextPaymentDate = tempDate
+        }</span>
+        <span class="cov8" title="1">return nextPaymentDate</span>
+}
+
+func getNewDateBasedOnWeekendForPayByFrequency(nextPaymentDate time.Time) time.Time <span class="cov8" title="1">{
+        if nextPaymentDate.Weekday() == time.Saturday </span><span class="cov8" title="1">{
+                nextPaymentDate = getWeekdayDate(nextPaymentDate, -1, 2)
+        }</span> else<span class="cov8" title="1"> if nextPaymentDate.Weekday() == time.Sunday </span><span class="cov8" title="1">{
+                nextPaymentDate = getWeekdayDate(nextPaymentDate, -2, 1)
+        }</span>
+        <span class="cov8" title="1">return nextPaymentDate</span>
+}
+
+func getNewDateBasedOnWeekendForPayByFrequencyWithHolidays(nextPaymentDate time.Time,
+        publicHolidays []string) time.Time <span class="cov8" title="1">{
+        nextPaymentDate = getNewDateBasedOnWeekendForPayByFrequency(nextPaymentDate)
+        isEnteredDateHoliday := ParseHolidayMatch(publicHolidays, nextPaymentDate)
+        if isEnteredDateHoliday </span><span class="cov8" title="1">{
+                nextPaymentDate = getNextPaymentDateOutOfHolidays(nextPaymentDate, publicHolidays)
+        }</span>
+        <span class="cov8" title="1">return nextPaymentDate</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package utilities
+
+import (
+        "encoding/json"
+        "io/ioutil"
+        "log"
+        "os"
+        "strings"
+)
+
+// PublicHolidays A structure to parse the public holiday's info from JSON file
+type PublicHolidays struct {
+        Date string `json:"date"`
+        Name string `json:"name"`
+}
+
+// HolidaysList A structure to parse the list of public holidays from JSON file
+type HolidaysList struct {
+        PublicHolidaysList []PublicHolidays `json:"public_holidays"`
+}
+
+// Constants to help in Flags Parsing and other payroll scheduling activities
+const (
+        YearFlag            = `year`
+        DefaultYearValue    = 2018
+        DayFlag             = `day`
+        DefaultDayNumber    = 30
+        PayFrequencyFlag    = `pay_frequency`
+        DefaultPayFrequency = `2 week`
+        StartingDateFlag    = `starting`
+        DefaultStartingDay  = `01/15/2018`
+        PublicHolidaysFlag  = `public_holidays`
+        PublicHolidaysFile  = `a file path like - ./public_holidays_2018.json`
+        DefaultFilePath     = ``
+        IntFlagDesc         = `an int`
+        StringFlagDesc      = `a string`
+        ArgumentsOffset     = 1
+        DefaultDateLayout   = "01/02/2006"
+)
+
+// GetPublicHolidays return the array of PublicHolidays structure, which contains
+// all info about public holidays
+func GetPublicHolidays(publicHolidaysFilePath string) []string <span class="cov8" title="1">{
+        var publicHolidaysList HolidaysList
+        var holidaysDates []string
+        publicHolidaysFilePath = strings.TrimLeft(publicHolidaysFilePath, "=")
+        jsonFile, openError := os.Open(publicHolidaysFilePath)
+        if openError != nil </span><span class="cov8" title="1">{
+                log.Println("Error in opening JSON file: ", openError)
+                return holidaysDates
+        }</span>
+        <span class="cov8" title="1">defer jsonFile.Close()
+
+        byteValue, _ := ioutil.ReadAll(jsonFile)
+        jsonParserError := json.Unmarshal([]byte(byteValue), &amp;publicHolidaysList)
+        if jsonParserError != nil </span><span class="cov8" title="1">{
+                log.Println("Error in parsing JSON file: ", jsonParserError)
+                return holidaysDates
+        }</span>
+
+        <span class="cov8" title="1">for index := 0; index &lt; len(publicHolidaysList.PublicHolidaysList); index++ </span><span class="cov8" title="1">{
+                holidaysDates = append(holidaysDates, publicHolidaysList.PublicHolidaysList[index].Date)
+        }</span>
+        <span class="cov8" title="1">return holidaysDates</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
