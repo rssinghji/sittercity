@@ -25,14 +25,14 @@ The payroll scheduler must conform to the following criteria:
     ● All payment dates must fall within the year being processed. 
     ● All payment dates must be made during a standard working week; e.g. Monday through Friday. 
     ● Any payment date that falls on a weekend should be made on the preceding Friday. 
-    ● Any payment date that falls on a public holiday should be made on the preceding Friday, unless the     public holiday is a Friday. 
-    ● If the public holiday is a Friday then the payment should be made on the first preceding day that is   not a public holiday or weekend. 
-    ● Each payment date must be printed to the command line in the following format; Monday, January 1,      2018 and include a trailing new line.
+    ● Any payment date that falls on a public holiday should be made on the preceding Friday, unless the public holiday is a Friday.
+    ● If the public holiday is a Friday then the payment should be made on the first preceding day that is not a public holiday or weekend.
+    ● Each payment date must be printed to the command line in the following format; Monday, January 1 2018 and include a trailing new line.
 
 ### Pay By Frequency
 
-    ● ~~There must be one payment only per calendar month. No calendar month should have less or more than     one payment.~~
-    ● If the payment date falls on a weekend, and the preceding available day is outside of the current      month, then the payment should be made on the first available day after the current date.
+    ● ~There must be one payment only per calendar month. No calendar month should have less or more than one payment.~
+    ● If the payment date falls on a weekend, and the preceding available day is outside of the current month, then the payment should be made on the first available day after the current date.
     ● Payment frequency options are:
         1. "1 week"
         2. "2 week"
@@ -130,8 +130,45 @@ The code is oranized as Sittercity/src/*. All the packages are mentioned with co
 
 First get the code from github.com using the following command:
 
-    go get github.com/rssinghji/sittercity
+    go get github.com/rssinghji/sittercity/src/payroll_scheduler
 
 ***Make sure to add the code folder to your GOPATH***
 
 Now change directory to **sittercity/src/payroll_scheduler**
+
+Building the code:
+
+    go build
+
+This will create an exe/binary under *payroll_scheduler* package
+
+Alternatively:
+
+    go install
+
+Will create the binary under bin folder if GOBIN has been properly set.
+
+### Running the command
+
+Once the binary is generated the code can be run as mentioned before from the terminal as:
+
+    payroll_scheduler --year 2018 --day 25
+
+Or
+
+    payroll_scheduler --year 2018 --day 22 --public_holidays="./public_holidays_2018.json"
+
+If you're running binary from bin folder, make sure you give the correct file path for JSON.
+
+Another commands which can be used are:
+
+    payroll_scheduler --pay_frequency "2 week" --starting "01/22/2018"
+
+&
+
+    payroll_scheduler --pay_frequency "2 week" --starting "01/22/2018" --public_holidays "./public_holidays_2018.json"
+
+## Code Metrics
+
+---------------
+
