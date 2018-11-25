@@ -16,7 +16,6 @@ To get the payroll schedule for 2018 on a bi-weekly schedule starting on the 15t
 
 ## Acceptance Criteria
 
----------------
 The payroll scheduler must conform to the following criteria:
 
 ### PayBy Day
@@ -92,7 +91,6 @@ Any payment date that falls on a public holiday should be made on the preceding 
 
 ## Code Organization
 
----------------
 
 The code is oranized as Sittercity/src/*. All the packages are mentioned with comments and test cases are included within respective packages. The major hierarchy of code is:
 
@@ -121,7 +119,6 @@ The code is oranized as Sittercity/src/*. All the packages are mentioned with co
 
 ### Working with this code
 
----------------
 
 #### Prerequisites
 
@@ -170,7 +167,6 @@ Another commands which can be used are:
 
 ## Code Metrics
 
----------------
 
 Change directory to sittercity\src and run command:
 
